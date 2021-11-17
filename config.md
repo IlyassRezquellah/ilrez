@@ -1,0 +1,7 @@
+[title]: <> (Ilyass Rezquellah's website)
+[icon]: <> (https://www.ilrez.com/images/icon.jpg)
+[server]: <> (usuario@lgiifso)
+[website_root]: <> (/var/www/html)
+[posts_directory]: <> (general)
+[homepage_category]: <> (general)
+[domain]: <> (https://www.ilrez.com)

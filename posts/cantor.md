@@ -1,6 +1,6 @@
 [category]: <> (General)
-[date]: <> (2020/10/24)
-[title]: <> (Hello world)
+[date]: <> (2020/11/25)
+[title]: <> (Cantor)
 [pandoc]: <> (--mathjax)
 
 This is a mirror of the post at https://medium.com/@VitalikButerin/cantor-was-wrong-debunking-the-infinite-set-hierarchy-e9ba5015102.

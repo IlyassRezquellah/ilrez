@@ -31,19 +31,10 @@ HEADER_TEMPLATE = """
 <link rel="stylesheet" type="text/css" href="$root/css/pretty-vendor.83ac49e057c3eac4fce3.css">
 <link rel="stylesheet" type="text/css" href="$root/css/misc.css">
 
-<script type="text/x-mathjax-config">
-<script>
-MathJax = {
-  tex: {
-    inlineMath: [['$', '$'], ['\\(', '\\)']]
-  },
-  svg: {
-    fontCache: 'global',
-  }
-};
-</script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script type="text/javascript" id="MathJax-script" async
-  src="$root/scripts/tex-svg.js">
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
 </script>
 
 <style>

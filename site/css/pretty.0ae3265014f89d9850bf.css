@@ -813,7 +813,7 @@ pre[class*="language-"] { padding: 1em; margin: .5em 0; overflow: auto; }
 .markdown-body .anchor:focus { outline: none; }
 .markdown-body p, .markdown-body blockquote, .markdown-body ul,
 .markdown-body ol, .markdown-body dl, .markdown-body table, .markdown-body pre { margin-top: 0; margin-bottom: 16px; }
-.markdown-body hr { height: .25em; padding: 0; margin: 24px 0; background-color: #e7e7e7; border: 0; }
+.markdown-body hr { height: 1px; padding: 0; margin: 10px 0; background-color: #e7e7e7; border: 0; }
 .markdown-body blockquote { padding: 0 1em; color: #777; border-left: .25em solid #ddd; }
 .markdown-body blockquote>:first-child { margin-top: 0; }
 .markdown-body blockquote>:last-child { margin-bottom: 0; }

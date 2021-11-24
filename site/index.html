@@ -16,6 +16,106 @@
         background-color: black;
     }
 }
+::selection{
+  background:#828c96;
+  color:#fff;
+}
+
+.monospace{
+  font-family:NBInter,monospace;
+  line-height:1.75;
+}
+
+.m0{
+  margin:0!important;
+}
+
+.cssP{
+    line-height: 1.59;
+    margin-bottom: 2.4rem;
+    font-weight: 400;
+    font-family: RiformaLLSub,helvetica Neue,Helvetica,arial,sans-serif;
+    color:#828c96;
+}
+
+.settingsP{
+  font-weight:400;
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+.ulLista{
+  line-height: 1.59;
+  font-weight: 400;
+  font-family: RiformaLLSub,helvetica Neue,Helvetica,arial,sans-serif;
+  padding:0;
+  display: block;
+  list-style-type: disc;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 0px;
+  width :auto;
+  line-height:250%;
+}
+
+.buttonList{
+  display: inline-block;
+  margin-right:0.7rem;
+}
+
+.p0{
+  padding:0!important;
+}
+
+.settingsli{
+  margin:0;
+  margin-bottom:0;
+  line-height:1.59;
+  font-weight: 400;
+  font-family: RiformaLLSub,helvetica Neue,Helvetica,arial,sans-serif;
+}
+.button{
+  background: #dce6f0;
+  color: #19232d;
+  padding: 0.35rem 0.9rem;
+  font-family: NBInter,monospace;
+  text-decoration: none!important;
+  border-radius: 0.4rem;
+  transition:color .25s,background .25s,opacity .25s;
+  cursor:pointer;
+}
+.button:hover{
+  background:#19232d;
+  color:#fff;
+}
+#ez-toc-container{
+        display:inline-block;
+        font-family:NBInter,monospace;
+        counter-reset:line;
+}
+#ez-toc-container #line{
+        display:block;
+        counter-increment:line;
+}
+#ez-toc-container #line::before{
+        display:inline-block;
+        width:0.05px;
+        padding-right:0.5em;
+        margin-right:0.8em;
+        content: counter(line);
+}
+#noSpace{
+        padding:0;
+} 
+html{
+        scroll-behavior:smooth;
+}
+
 </style>
 
 
@@ -31,14 +131,8 @@
 <link rel="stylesheet" type="text/css" href="./css/misc.css">
 
 
-<script>
-MathJax = {
-  tex: {
-    inlineMath: [['$', '$'], ['\(', '\)']]
-  }
-};
-</script>
-<script id="MathJax-script" async
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
 </script>
 
@@ -57,10 +151,13 @@ MathJax = {
 <br>
 <center><h1 style="border-bottom:0px"> Ilyass Rezquellah's website </h1></center>
 
-<center><hr>
-<span class="toc-category" style="font-size:83%"><a href="./categories/cryptography.html">Cryptography</a></span>
-<span class="toc-category" style="font-size:100%"><a href="./categories/general.html">General</a></span>
-<hr></center>
+<div><br><div><p class="cssP" >Collected writing and research by ilyass</p></div></div><div class="m0 ulLista"><hr><p class="monospace m0 settingsP">Filter</p>
+<span class="buttonList noBullets settingsLi" style="font-size:100%"><a class="button button--active" href="./categories/philosophy.html">Philosophy</a></span>
+<span class="buttonList noBullets settingsLi" style="font-size:100%"><a class="button button--active" href="./categories/general.html">General</a></span>
+<span class="buttonList noBullets settingsLi" style="font-size:100%"><a class="button button--active" href="./categories/economics.html">Economics</a></span>
+<span class="buttonList noBullets settingsLi" style="font-size:83%"><a class="button button--active" href="./categories/cryptography.html">Cryptography</a></span>
+<span class="buttonList noBullets settingsLi" style="font-size:90%"><a class="button button--active" href="./categories/blockchains.html">Blockchains</a></span>
+<hr></div>
 
 <br>
 <ul class="post-list" style="padding-left:0">
@@ -71,6 +168,15 @@ MathJax = {
     <span class="post-meta">2021 Nov 05</span>
     <h3 style="margin-top:12px">
       <a class="post-link" href="./general/2021/11/05/crypto.html">Halo and more: exploring incremental verification and SNARKs without pairings</a>
+    </h3>
+</li>
+
+
+
+<li>
+    <span class="post-meta">2021 Oct 31</span>
+    <h3 style="margin-top:12px">
+      <a class="post-link" href="./general/2021/10/31/cities.html">Crypto Cities</a>
     </h3>
 </li>
 
@@ -89,6 +195,15 @@ MathJax = {
     <span class="post-meta">2020 Oct 24</span>
     <h3 style="margin-top:12px">
       <a class="post-link" href="./general/2020/10/24/hello.html">Hello world</a>
+    </h3>
+</li>
+
+
+
+<li>
+    <span class="post-meta">2019 Apr 03</span>
+    <h3 style="margin-top:12px">
+      <a class="post-link" href="./general/2019/04/03/collusion.html">On Collusion</a>
     </h3>
 </li>
 

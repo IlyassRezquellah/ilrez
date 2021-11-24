@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import os, sys, datetime
-
+from bs4 import BeautifulSoup
+import re
 PRE_HEADER = """
 
 <!DOCTYPE html>
@@ -19,6 +20,106 @@ PRE_HEADER = """
         background-color: black;
     }
 }
+::selection{
+  background:#828c96;
+  color:#fff;
+}
+
+.monospace{
+  font-family:NBInter,monospace;
+  line-height:1.75;
+}
+
+.m0{
+  margin:0!important;
+}
+
+.cssP{
+    line-height: 1.59;
+    margin-bottom: 2.4rem;
+    font-weight: 400;
+    font-family: RiformaLLSub,helvetica Neue,Helvetica,arial,sans-serif;
+    color:#828c96;
+}
+
+.settingsP{
+  font-weight:400;
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+.ulLista{
+  line-height: 1.59;
+  font-weight: 400;
+  font-family: RiformaLLSub,helvetica Neue,Helvetica,arial,sans-serif;
+  padding:0;
+  display: block;
+  list-style-type: disc;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 0px;
+  width :auto;
+  line-height:250%;
+}
+
+.buttonList{
+  display: inline-block;
+  margin-right:0.7rem;
+}
+
+.p0{
+  padding:0!important;
+}
+
+.settingsli{
+  margin:0;
+  margin-bottom:0;
+  line-height:1.59;
+  font-weight: 400;
+  font-family: RiformaLLSub,helvetica Neue,Helvetica,arial,sans-serif;
+}
+.button{
+  background: #dce6f0;
+  color: #19232d;
+  padding: 0.35rem 0.9rem;
+  font-family: NBInter,monospace;
+  text-decoration: none!important;
+  border-radius: 0.4rem;
+  transition:color .25s,background .25s,opacity .25s;
+  cursor:pointer;
+}
+.button:hover{
+  background:#19232d;
+  color:#fff;
+}
+#ez-toc-container{
+        display:inline-block;
+        font-family:NBInter,monospace;
+        counter-reset:line;
+}
+#ez-toc-container #line{
+        display:block;
+        counter-increment:line;
+}
+#ez-toc-container #line::before{
+        display:inline-block;
+        width:0.05px;
+        padding-right:0.5em;
+        margin-right:0.8em;
+        content: counter(line);
+}
+#noSpace{
+        padding:0;
+} 
+html{
+        scroll-behavior:smooth;
+}
+
 </style>
 
 """
@@ -69,7 +170,21 @@ TOC_TITLE_TEMPLATE = """
 
 """
 
-FOOTER = """ </div> """
+FOOTER = """
+ </div>
+
+<script>
+	// remove fragment as much as it can go without adding an entry in browser history:
+window.location.replace("#");
+
+// slice off the remaining '#' in HTML5:    
+if (typeof window.history.replaceState == 'function') {
+  history.replaceState({}, '', window.location.href.slice(0, -1));
+}
+	
+
+</script>
+"""
 
 TOC_START = """
 
@@ -125,7 +240,24 @@ RSS_MAIN_TEMPLATE = """
 </channel>
 </rss>
 """
+CONTENT_INICIO = """
+<div id="ez-toc-container">
+	<div>
+		<p>Contents</p>
+		<br>
+	</div>
+	<nav>
+		<ul id="noSpace">
 
+
+"""
+
+CONTENT_FIN= """
+</ul>
+	</nav>
+
+</div>
+"""
 def extract_metadata(fil, filename=None):
     metadata = {}
     if filename:
@@ -196,11 +328,11 @@ def defancify(text):
 
 
 def make_categories_header(categories, root_path):
-    o = ['<center><hr>']
+    o = ['<div><br><div><p class="cssP" >Collected writing and research by ilyass</p></div></div><div class="m0 ulLista"><hr><p class="monospace m0 settingsP">Filter</p>']
     for category in categories:
-        template = '<span class="toc-category" style="font-size:{}%"><a href="{}/categories/{}.html">{}</a></span>'
+        template = '<span class="buttonList noBullets settingsLi" style="font-size:{}%"><a class="button button--active" href="{}/categories/{}.html">{}</a></span>'
         o.append(template.format(min(100, 1000 // len(category)), root_path, category, category.capitalize()))
-    o.append('<hr></center>')
+    o.append('<hr></div>')
     return '\n'.join(o)
 
 
@@ -259,12 +391,25 @@ if __name__ == '__main__':
         
         os.system('pandoc -o /tmp/temp_output.html {} {}'.format(file_location, options))
         root_path = '../../../..'
+        with open('/tmp/temp_output.html') as f:
+    	    #read File
+            content = f.read()
+            #parse HTML
+            soup = BeautifulSoup(content, 'html.parser')
+            o = []
+            for link in soup.find_all(re.compile('^h[1-6]$')):
+                template = '<li id="line"><a href="{}">{}</a></li>'
+                o.append(template.format("#"+link.get('id'),link.string))
+            test='\n'.join(o)
         total_file_contents = (
             PRE_HEADER +
             RSS_LINK.format(root_path, metadata['title']) +
             HEADER_TEMPLATE.replace('$root', root_path) +
             make_twitter_card(metadata['title'], global_config) +
             TITLE_TEMPLATE.format(metadata['title'], get_printed_date(metadata), root_path) +
+            CONTENT_INICIO +
+            test +
+            CONTENT_FIN+
             defancify(open('/tmp/temp_output.html').read()) +
             FOOTER
         )

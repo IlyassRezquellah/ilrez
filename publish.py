@@ -7,6 +7,9 @@ PRE_HEADER = """
 <!DOCTYPE html>
 <html>
 <meta charset="UTF-8">
+<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.jpg">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.jpg">
+<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.jpg">
 <style>
 @media (prefers-color-scheme: dark) {
     body {
@@ -97,8 +100,7 @@ PRE_HEADER = """
   background:#19232d;
   color:#fff;
 }
-#ez-toc-container{
-        display:inline-block;
+#ez-toc-container ul{
         font-family:NBInter,monospace;
         counter-reset:line;
 }
@@ -392,15 +394,65 @@ if __name__ == '__main__':
         os.system('pandoc -o /tmp/temp_output.html {} {}'.format(file_location, options))
         root_path = '../../../..'
         with open('/tmp/temp_output.html') as f:
-    	    #read File
+            #read File
             content = f.read()
             #parse HTML
             soup = BeautifulSoup(content, 'html.parser')
             o = []
+            childs = []
+            count =0
+            flag = False
+	    #Partimos con la idea de que en nuestro doc siempre empezamos con h2 despues del h1 del titulo
             for link in soup.find_all(re.compile('^h[1-6]$')):
-                template = '<li id="line"><a href="{}">{}</a></li>'
-                o.append(template.format("#"+link.get('id'),link.string))
+                if link.name == 'h3':
+                    flag = True
+                else:
+                    flag = False
+                    count = count+1
+                if flag:
+                    template2='<li id="line" class="{}"><a href="{}">{}</a></li>'
+                    childs.append(template2.format(count,"#"+link.get('id'),link.string))
+                else:
+                    template = '<li id="line" class="{}"><a href="{}">{}</a></li>'
+                    o.append(template.format(count,"#"+link.get('id'),link.string))
+            
             test='\n'.join(o)
+            testChilds='\n'.join(childs)
+            #print(test)
+            #print('---------')
+            #print(testChilds)
+            #print(' ')
+            #pasamos los resultados obtenidos a una string
+         
+        soup = BeautifulSoup(test, 'html.parser')
+        soupC = BeautifulSoup(testChilds, 'html.parser')
+        cajita=[]
+        result=[]
+        flag = False
+        #Partimos con la idea de que en nuestro doc siempre empezamos con h2 despues del h1 del titulo
+        for padre in soup.find_all('li'): 
+            for hijo in soupC.find_all('li'):
+                if padre.get('class') == hijo.get('class'):
+                    flag = True
+                    for link in hijo.find_all('a'):
+                        templateF = '<li id="line" class="{}"><a href="{}">{}</a></li>'
+                        cajita.append(templateF.format(count,link.get('href'),hijo.string))
+            if flag:
+                for link in padre.find_all('a'):
+                    templateFlag = '<li id="line" class="{}"><a href="{}">{}</a><ul>{}</ul></li>'
+                    test=' '.join(cajita)
+                    result.append(templateFlag.format(count,link.get('href'),padre.string,test))
+            else:
+                for link in padre.find_all('a'):
+                    templateF = '<li id="line" class="{}"><a href="{}">{}</a></li>'
+                    result.append(templateF.format(count,link.get('href'),padre.string))
+            flag=False
+            cajita=[]
+        resultado='\n'.join(result)
+        #print(resultado)
+
+
+
         total_file_contents = (
             PRE_HEADER +
             RSS_LINK.format(root_path, metadata['title']) +
@@ -408,7 +460,7 @@ if __name__ == '__main__':
             make_twitter_card(metadata['title'], global_config) +
             TITLE_TEMPLATE.format(metadata['title'], get_printed_date(metadata), root_path) +
             CONTENT_INICIO +
-            test +
+            resultado +
             CONTENT_FIN+
             defancify(open('/tmp/temp_output.html').read()) +
             FOOTER

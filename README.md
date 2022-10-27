@@ -1,6 +1,6 @@
 # Blogmaker
 
-This is an ultra-simple self-hosted blog publishing solution made by Vitalik Buterin.
+This is an ultra-simple self-hosted blog publishing solution made by Vitalik Buterin..
 
 ### Dependencies
 
